@@ -1,10 +1,14 @@
 from __future__ import annotations
-from component import Component
-from collision import LineSegment
-from actor import Actor
+
 import copy
 import math
+
 import numpy as np
+
+from actor import Actor
+from collision import LineSegment
+from component import Component
+
 
 class LineComponent(Component):
     def __init__(self, owner: Actor):
@@ -26,10 +30,18 @@ class LineComponent(Component):
         self.update_world_line()
 
     def update_world_line(self):
-        rot_mat = np.array([[math.cos(self.rotation), -math.sin(self.rotation)],
-               [math.sin(self.rotation), math.cos(self.rotation)]])
-        self.__world_line.start_pos = rot_mat @ self.__object_line.start_pos + self._owner.position
-        self.__world_line.end_pos = rot_mat @ self.__object_line.end_pos + self._owner.position
+        rot_mat = np.array(
+            [
+                [math.cos(self.rotation), -math.sin(self.rotation)],
+                [math.sin(self.rotation), math.cos(self.rotation)],
+            ]
+        )
+        self.__world_line.start_pos = (
+            rot_mat @ self.__object_line.start_pos + self._owner.position
+        )
+        self.__world_line.end_pos = (
+            rot_mat @ self.__object_line.end_pos + self._owner.position
+        )
 
     def get_world_box(self):
         return self.__world_line
