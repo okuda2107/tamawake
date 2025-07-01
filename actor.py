@@ -24,7 +24,7 @@ class Actor:
         self.position = np.array([0.0, 0.0])
         self.velocity = np.array([0.0, 0.0])
         self.scale: float = 0.0
-        self.rotation: float = 0.0 # 傾き: y / x: tan値
+        self.rotation: float = 0.0 # radian角度，反時計回りを角度の正方向とする
         self.state: state = state.active
         self.__components: list[Component] = []
         self.sprite = pygame.sprite.Sprite()
