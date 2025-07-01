@@ -24,7 +24,7 @@ class LineComponent(Component):
     def update(self, delta_time: float):
         self.update_world_line()
 
-    def set_object_box(self, model: LineSegment):
+    def set_object_line(self, model: LineSegment):
         self.__object_line = model
         self.__world_line = copy.deepcopy(model)
         self.update_world_line()
