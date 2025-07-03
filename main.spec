@@ -5,7 +5,7 @@ a = Analysis(
     ['main.py'],
     pathex=[],
     binaries=[],
-    datas=[('venv\\Lib\\site-packages\\mediapipe\\modules', 'mediapipe\\modules'),],
+    datas=[('tamawake\\Lib\\site-packages\\mediapipe\\modules', 'mediapipe\\modules'),],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
