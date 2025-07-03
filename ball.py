@@ -87,5 +87,3 @@ class Ball(Actor):
             )
             # 反発係数 1.3
             self.velocity -= 1.3 * normal_vel
-            print(self.position)
-            # self.velocity += normal
