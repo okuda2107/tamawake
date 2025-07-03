@@ -37,7 +37,8 @@ class Actor:
 
     def __del__(self):
         self.game.remove_actor(self)
-        for comp in self.__components:
+        while len(self.__components) != 0:
+            comp = self.__components.pop()
             comp.__del__()
 
     def load_properties(self, obj: dict[str, Any]) -> None:
