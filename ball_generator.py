@@ -1,52 +1,53 @@
 from __future__ import annotations
-import numpy as np
+
 import random
-from game import *
-from actor import *
-from sprite_component import *
-from ball import *
-from point_manager import *
+from typing import TYPE_CHECKING
 
-# 発生確率
-level1 = 0.05
-level2 = 0.1
-lebel3 = 0.3
+import numpy as np
 
-class ball_generator(Actor):
+from actor import Actor
+from ball import Ball, Kind
+from point_manager import PointManager
+from sprite_component import SpriteComponent
+
+if TYPE_CHECKING:
+    from game import Game
+    from playground import Level
+
+
+class BallGenerator(Actor):
     def __init__(self, game: Game):
         super().__init__(game)
         self.position = np.array([random.random(), 0])
         self.velocity = 0.3
-        self.probability: float = 0.0
-        self.point_manager: point_manager
+        self.level: Level = None
+        # ボールの削除はPointManagerで行うため，生成したボールをlistに追加する必要がある
+        self.point_manager: PointManager = None
 
     def __del__(self):
-        return super().__del__()
+        super().__del__()
 
     def update_actor(self, delta_time: float) -> None:
+        # generator自体の移動
         self.position += np.array([self.velocity * delta_time, 0])
-        if (self.position[0] < 0 and self.velocity < 0) or (self.position[0] > 1 and self.velocity > 0):
+        if (self.position[0] < 0 and self.velocity < 0) or (
+            self.position[0] > 1 and self.velocity > 0
+        ):
             self.velocity *= -1
-        
-        if random.random() < self.probability:
-            size: float = 0.0
-            if self.probability == level1:
-                size = 0.2
-            elif self.probability == level2:
-                size = 0.15
-            elif self.probability == lebel3:
-                size = 0.1
-            actor = ball(self.game, size)
+
+        # ボールの生成
+        if random.random() < self.level.probability:
+            size: float = self.level.size
+            actor = Ball(self.game, size)
             actor.position = self.position
-            file = ''
+            file = ""
             if random.random() < 0.5:
-                actor.red_white = 1
-                file = 'asset/red.png'
+                actor.red_white = Kind.red
+                file = "asset/red.png"
             else:
-                actor.red_white = 2
-                file = 'asset/white.png'
+                actor.red_white = Kind.white
+                file = "asset/white.png"
             sc = SpriteComponent(actor)
             temp_radius = actor.radius * self.game.screen_size[0]
             sc.set_image(file, (temp_radius, temp_radius))
             self.point_manager.ball_list.append(actor)
-

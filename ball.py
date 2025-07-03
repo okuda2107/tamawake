@@ -39,12 +39,8 @@ class Ball(Actor):
         super().__del__()
 
     def update_actor(self, delta_time: float) -> None:
-        # contact_actors = self.game.physics.isCollision(self.sprite)
-        # for actor in contact_actors:
-        #     actor_pos = np.array([actor.center.x / self.game.screen_size[0], actor.center.y / self.game.screen_size[1]])
-        #     normal /= np.linalg.norm(self.position - actor_pos)
-        #     normal_vel = np.dot(normal, self.velocity)
-        #     self.velocity -= 1.5 * normal_vel * normal
+        if len(self.game.physics.lines) == 0:
+            return
         bar = self.game.physics.lines[0].get_world_line()
         if intersect(bar, self.cc.circle):
             normal: np.ndarray = None

@@ -125,5 +125,4 @@ class Game:
 
     def __load_data(self) -> None:
         # Test(self)
-        level_loader.load_level(self, "asset/playground.json")
-        # level_loader.load_level(self, "asset/title.json")
+        level_loader.load_level(self, "asset/title.json")

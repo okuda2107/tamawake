@@ -35,8 +35,8 @@ class PlayGround(Actor):
         super().__init__(game)
         self.position = np.array([0, 0])
         self.bar = Bar(self.game)
-        self.point_manager = PointManager(self.game)
-        self.ball_gen = BallGenerator(self.game)
+        self.point_manager: PointManager = PointManager(self.game)
+        self.ball_gen: BallGenerator = BallGenerator(self.game)
         self.ball_gen.point_manager = self.point_manager
         self.ball_gen.level = LEVEL1
         self.point_manager.level = LEVEL1
@@ -45,9 +45,6 @@ class PlayGround(Actor):
 
     def __del__(self):
         super().__del__()
-        self.bar.state = state.dead
-        self.ball_generator.state = state.dead
-        self.point_manager.state = state.dead
 
     def update_actor(self, delta_time: float) -> None:
         self.timer -= delta_time
@@ -59,20 +56,25 @@ class PlayGround(Actor):
             self.ball_gen.level = LEVEL2
             self.point_manager.level = LEVEL2
         else:
-            self.ball_gen = LEVEL3
+            self.ball_gen.level = LEVEL3
             self.point_manager.level = LEVEL3
 
         if self.timer <= 0:
-            self.game.point = self.score
+            self.game.point = self.point_manager.score
             level_loader.load_level(self.game, "asset/result.json")
+            self.bar.state = state.dead
             self.state = state.dead
+            self.ball_gen.state = state.dead
+            self.point_manager.state = state.dead
+            for ball in self.point_manager.ball_list:
+                ball.state = state.dead
 
         if self.tc is not None:
             self.tc.set_text(
                 "time:"
                 + str(round(self.timer, 1))
                 + " score:"
-                + str(self.point_manager.scale),
+                + str(self.point_manager.score),
                 (239, 241, 250),
             )
 
