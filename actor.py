@@ -1,11 +1,14 @@
 from __future__ import annotations
+
 from abc import abstractmethod
-from typing import Any, TypeVar
 from enum import Enum
+from typing import Any
+
 import numpy as np
 import pygame
-from game import *
+
 from component import *
+from game import *
 
 # actorを生成する関数のジェネリクス
 # T = TypeVar('T')
@@ -14,9 +17,11 @@ from component import *
 #     t.load_properties(obj)
 #     return t
 
+
 class state(Enum):
     active = 1
     dead = 2
+
 
 class Actor:
     def __init__(self, game: Game):
@@ -24,7 +29,7 @@ class Actor:
         self.position = np.array([0.0, 0.0])
         self.velocity = np.array([0.0, 0.0])
         self.scale: float = 0.0
-        self.rotation: float = 0.0 # radian角度，反時計回りを角度の正方向とする
+        self.rotation: float = 0.0  # 傾き y / xの値
         self.state: state = state.active
         self.__components: list[Component] = []
         self.sprite = pygame.sprite.Sprite()
@@ -36,16 +41,16 @@ class Actor:
             comp.__del__()
 
     def load_properties(self, obj: dict[str, Any]) -> None:
-        state_data = obj.get('state')
+        state_data = obj.get("state")
         if state_data != None:
-            if state_data == 'active':
+            if state_data == "active":
                 self.state = state.active
-            elif state_data == 'dead':
+            elif state_data == "dead":
                 self.state = state.dead
-        pos_data = obj.get('position')
+        pos_data = obj.get("position")
         if pos_data != None:
             self.position = np.array(pos_data)
-        rot_data = obj.get('rotation')
+        rot_data = obj.get("rotation")
         if rot_data != None:
             self.rotation = rot_data
 
@@ -73,7 +78,7 @@ class Actor:
         pass
 
     # TypeIDを引数に取り，IDに合致したcomponentを既に持っていたらそれを返す．無かったらNoneを返す．
-    def get_component_of_type(self, type: TypeID) -> None|Component:
+    def get_component_of_type(self, type: TypeID) -> None | Component:
         comp: Component = None
         for c in self.__components:
             if c.get_type() == type:

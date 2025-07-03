@@ -30,10 +30,12 @@ class LineComponent(Component):
         self.update_world_line()
 
     def update_world_line(self):
+        # 傾きなので，radian角度に計算し直し
+        rotation = -1 * math.atan(self._owner.rotation)
         rot_mat = np.array(
             [
-                [math.cos(self.rotation), -math.sin(self.rotation)],
-                [math.sin(self.rotation), math.cos(self.rotation)],
+                [math.cos(rotation), -math.sin(rotation)],
+                [math.sin(rotation), math.cos(rotation)],
             ]
         )
         self.__world_line.start_pos = (
@@ -43,5 +45,5 @@ class LineComponent(Component):
             rot_mat @ self.__object_line.end_pos + self._owner.position
         )
 
-    def get_world_box(self):
+    def get_world_line(self):
         return self.__world_line

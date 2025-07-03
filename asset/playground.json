@@ -2,7 +2,7 @@
     "version": 1,
     "actors": [
         {
-            "type": "point_manager",
+            "type": "PlayGround",
             "properties": {
                 "timerSize": 80
             }

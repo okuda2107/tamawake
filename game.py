@@ -9,7 +9,7 @@ import level_loader
 from actor import Actor, state
 from audio_system import AudioSystem
 from mediapipe_input import MediapipeInput, camera_check
-from physics import Physics
+from phys_world import PhysWorld
 from test import Test
 
 if TYPE_CHECKING:
@@ -21,7 +21,7 @@ class Game:
         self.__is_running: bool = True
         self.__is_updating_actors: bool = False
         self.__ticks_counts: pygame.time.Clock = pygame.time.Clock()
-        self.physics = Physics()
+        self.physics = PhysWorld(self)
         self.mediapipe = MediapipeInput()
         self.audio_system = AudioSystem()
         self.screen_size = np.array([1300, 700])  # (1300, 700)
@@ -124,5 +124,6 @@ class Game:
             self.__sprites.remove(sprite_comp)
 
     def __load_data(self) -> None:
-        Test(self)
+        # Test(self)
+        level_loader.load_level(self, "asset/playground.json")
         # level_loader.load_level(self, "asset/title.json")
